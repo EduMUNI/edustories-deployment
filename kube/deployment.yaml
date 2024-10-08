@@ -17,6 +17,8 @@ spec:
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:      
       - name: edustories-be-staging
         image: ghcr.io/noltio/edustories-be:latest
