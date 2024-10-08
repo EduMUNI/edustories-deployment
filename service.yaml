@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: edustories-be-staging-svc
+spec:
+  type: ClusterIP
+  ports:
+  - name: edustories-be-staging-port                                                 
+    port: 80                                                                    
+    targetPort: 3275    
+  selector:
+    app: edustories-be-staging

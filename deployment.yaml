@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edustories-be-staging
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: edustories-be-staging
+  template:
+    metadata:
+      labels:
+        app: edustories-be-staging
+    spec:
+      securityContext:                                                          
+        runAsUser: 1000
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:      
+      - name: edustories-be-staging
+        image: ghcr.io/noltio/edustories-be:latest
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        ports:
+        - containerPort: 3275
+        volumeMounts:
+        - name: config-volume
+          mountPath: /usr/local/config.yml
+          subPath: config.yml
+      imagePullSecrets:
+        - name: ghcr-secret
+      volumes:
+        - name: config-volume
+          secret:
+            secretName: app-secret-config-edustories-staging
+            items:
+              - key: config.yml
+                path: config.yml

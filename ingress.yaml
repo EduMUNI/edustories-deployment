@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1                                                
+kind: Ingress                                                                   
+metadata:                                                                       
+  name: edustories-be-staging-ingress                                                
+  annotations:                                                                  
+    kubernetes.io/ingress.class: "nginx"                                        
+    kubernetes.io/tls-acme: "true"                                              
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:                                                                           
+  tls:                                                                          
+    - hosts:                                                                    
+        - "edustories-be-staging.dyn.cloud.e-infra.cz"                                              
+      secretName: edustories-be-staging-dyn-cloud-e-infra-cz-tls                                    
+    - hosts:
+        - "staging.api.edustories.jetl.io"
+      secretName: edustories-be-staging-2-jetl-io-tls
+  rules:                                                                        
+  - host: "staging.api.edustories.jetl.io"
+    http:                                                                       
+      paths:                                                                    
+      - backend:                                                                
+          service:                                                              
+            name: edustories-be-staging-svc                                          
+            port:                                                               
+              number: 80                                                      
+        pathType: ImplementationSpecific
+  - host: "edustories-be-staging.dyn.cloud.e-infra.cz"
+    http:                                                                       
+      paths:                                                                    
+      - backend:                                                                
+          service:                                                              
+            name: edustories-be-staging-svc                                          
+            port:                                                               
+              number: 80                                                      
+        pathType: ImplementationSpecific
