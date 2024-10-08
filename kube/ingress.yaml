@@ -24,12 +24,12 @@ spec:
             port:                                                               
               number: 80                                                      
         pathType: ImplementationSpecific
-  - host: "edustories-be-staging.dyn.cloud.e-infra.cz"
-    http:                                                                       
-      paths:                                                                    
-      - backend:                                                                
-          service:                                                              
-            name: edustories-be-staging-svc                                          
-            port:                                                               
-              number: 80                                                      
-        pathType: ImplementationSpecific
+#  - host: "edustories-whisper.dyn.cloud.e-infra.cz"
+#    http:
+#      paths:
+#      - backend:
+#          service:
+#            name: edustories-whisper-svc
+#            port:
+#              number: 80
+#        pathType: ImplementationSpecific

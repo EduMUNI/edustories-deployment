@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: edustories-be-staging
+  name: edustories
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: edustories-be-staging
+      app: edustories
   template:
     metadata:
       labels:
-        app: edustories-be-staging
+        app: edustories
     spec:
       securityContext:                                                          
         runAsUser: 1000
@@ -32,8 +32,16 @@ spec:
         - name: config-volume
           mountPath: /usr/local/config.yml
           subPath: config.yml
-      imagePullSecrets:
-        - name: ghcr-secret
+      - name: edustories-whisper
+        image: ghcr.io/edumuni/speech2text-api:latest
+        imagePullPolicy: Always
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        ports:
+        - containerPort: 5000
       volumes:
         - name: config-volume
           secret:
@@ -41,3 +49,4 @@ spec:
             items:
               - key: config.yml
                 path: config.yml
+
