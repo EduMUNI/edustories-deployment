@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: edustories
+  name: tmp2-edustories
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: edustories
+      app: tmp2-edustories
   template:
     metadata:
       labels:
-        app: edustories
+        app: tmp2-edustories
     spec:
       securityContext:                                                          
         runAsUser: 1000
@@ -28,14 +28,32 @@ spec:
           capabilities:
             drop:
             - ALL
+        env:
+          - name: NUMBA_CACHE_DIR
+            value: /tmp/
+          - name: TRANSFORMERS_CACHE
+            value: /tmp/
         ports:
         - containerPort: 3275
         volumeMounts:
         - name: config-volume
           mountPath: /usr/local/config.yml
           subPath: config.yml
+        - name: tmp
+          mountPath: /tmp
       - name: edustories-whisper
         image: ghcr.io/edumuni/speech2text-api:latest
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "2"
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+#        command:
+#          - /bin/bash
+#          - -c
+#          - "speech2text-api httpapi --host 0.0.0.0 --port 5000"
         imagePullPolicy: Always
         securityContext:
           allowPrivilegeEscalation: false
@@ -51,4 +69,5 @@ spec:
             items:
               - key: config.yml
                 path: config.yml
-
+        - name: tmp
+          emptyDir: {}
