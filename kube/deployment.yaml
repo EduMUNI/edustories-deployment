@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tmp2-edustories
+  name: edustories
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: tmp2-edustories
+      app: edustories
   template:
     metadata:
       labels:
-        app: tmp2-edustories
+        app: edustories
     spec:
       securityContext:                                                          
         runAsUser: 1000
